@@ -10,9 +10,6 @@ import {
   Modal,
   Alert,
 } from "react-native";
-import * as ScreenOrientation from "expo-screen-orientation";
-import { Ionicons } from "@expo/vector-icons";
-// import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect } from '@react-navigation/native';
 
 const MENU_CATEGORIES = [
@@ -89,31 +86,6 @@ const BillingPage = ({navigation}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isPrintModalVisible, setIsPrintModalVisible] = useState(false);
 
-  // Add a new useEffect to continuously enforce landscape orientation
-  useEffect(() => {
-    const forceLandscape = async () => {
-      try {
-        // Lock to landscape and prevent any orientation changes
-        await ScreenOrientation.lockAsync(
-          ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
-        );
-      } catch (error) {
-        console.error('Failed to lock screen to landscape', error);
-      }
-    };
-
-    // Call immediately and set up a periodic check
-    forceLandscape();
-    const orientationInterval = setInterval(forceLandscape, 5000);
-
-    // Cleanup function
-    return () => {
-      clearInterval(orientationInterval);
-      // Optional: Unlock orientation when component unmounts
-      ScreenOrientation.unlockAsync();
-    };
-  }, []); // Empty dependency array ensures this runs once on mount and continues
-
   useFocusEffect(
     React.useCallback(() => {
       // Set up interval to update current date and time
@@ -128,7 +100,6 @@ const BillingPage = ({navigation}) => {
       };
     }, []) // Empty dependency array means this effect runs once when the screen comes into focus
   );
-
 
   const filteredMenuItems = MENU_ITEMS[selectedCategory]?.filter((item) =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -207,14 +178,14 @@ const BillingPage = ({navigation}) => {
           onPress={() => updateItemQuantity(item.id, -1)}
           style={styles.quantityButton}
         >
-          <Ionicons name="remove" size={20} color="#007bff" />
+          <Text style={styles.quantityButtonText}>-</Text>
         </TouchableOpacity>
         <Text style={styles.quantityText}>{item.quantity}</Text>
         <TouchableOpacity 
           onPress={() => updateItemQuantity(item.id, 1)}
           style={styles.quantityButton}
         >
-          <Ionicons name="add" size={20} color="#007bff" />
+          <Text style={styles.quantityButtonText}>+</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.billText}>₹{(item.price * item.quantity).toFixed(2)}</Text>
@@ -318,7 +289,6 @@ const BillingPage = ({navigation}) => {
               onPress={handlePrint}
               disabled={billItems.length === 0}
             >
-              <Ionicons name="print" size={24} color="white" />
               <Text style={styles.printButtonText}>Print Bill</Text>
             </TouchableOpacity>
           </View>
@@ -380,15 +350,12 @@ const styles = StyleSheet.create({
     flex: 1, 
     flexDirection: "row",
     padding: 10,
-    // width: "1000",
   },
   categoryList: { 
-    // marginLeft: 100,
     width: 10,
     backgroundColor: "#fff", 
     borderRadius: 10,
     padding: 10,
-    // marginRight: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -400,12 +367,10 @@ const styles = StyleSheet.create({
     marginBottom: 8, 
     borderRadius: 8, 
     backgroundColor: "#f8f9fa",
-    // width: 150, 
   },
   categoryButtonActive: { 
     backgroundColor: "#007bff",
     shadowColor: "#007bff",
-    // shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },
@@ -439,7 +404,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 5,
     shadowColor: "#000",
-    // shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
@@ -508,6 +472,11 @@ const styles = StyleSheet.create({
     padding: 5,
     backgroundColor: '#f1f3f5',
     borderRadius: 5,
+  },
+  quantityButtonText: {
+    color: '#007bff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   quantityText: {
     marginHorizontal: 10,

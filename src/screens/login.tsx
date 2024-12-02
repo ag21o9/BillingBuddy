@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,30 +8,8 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import { Eye, EyeOff, Lock, User } from "lucide-react-native";
-import * as ScreenOrientation from "expo-screen-orientation";
 
 const Login = ({ navigation }) => {
-  useEffect(() => {
-    // Use useEffect to set orientation when the component mounts
-    const setPortraitOrientation = async () => {
-      try {
-        await ScreenOrientation.lockAsync(
-          ScreenOrientation.OrientationLock.PORTRAIT
-        );
-      } catch (error) {
-        console.error("Failed to set portrait orientation", error);
-      }
-    };
-
-    setPortraitOrientation();
-
-    // Optional: Clean up orientation when component unmounts
-    return () => {
-      ScreenOrientation.unlockAsync();
-    };
-  }, []);
-
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -83,7 +61,6 @@ const Login = ({ navigation }) => {
       <Text style={styles.subtitle}>Please sign in to continue</Text>
 
       <View style={styles.inputContainer}>
-        <User style={styles.icon} />
         <TextInput
           style={styles.input}
           placeholder="Username"
@@ -95,7 +72,6 @@ const Login = ({ navigation }) => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Lock style={styles.icon} />
         <TextInput
           style={styles.input}
           placeholder="Password"
@@ -108,7 +84,7 @@ const Login = ({ navigation }) => {
           style={styles.eyeIcon}
           onPress={() => setShowPassword(!showPassword)}
         >
-          {showPassword ? <EyeOff /> : <Eye />}
+          <Text>{showPassword ? "Hide" : "Show"}</Text>
         </TouchableOpacity>
       </View>
 
@@ -139,17 +115,6 @@ const Login = ({ navigation }) => {
           Sign up
         </Text>
       </Text>
-
-      {/* Hint for testing */}
-      {/* <View style={styles.hintContainer}>
-        <Text style={styles.hintText}>
-          Test Credentials:
-        </Text>
-        <Text style={styles.credentialsText}>
-          Username: abc@gmail.com
-          Password: 12345
-        </Text>
-      </View> */}
     </View>
   );
 };
@@ -189,10 +154,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: "#1F2937",
-  },
-  icon: {
-    marginRight: 10,
-    color: "#9CA3AF",
   },
   eyeIcon: {
     marginLeft: 10,

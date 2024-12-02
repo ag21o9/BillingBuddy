@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,63 +7,29 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import {
-  Store,
-  ShoppingCart,
-  UtensilsCrossed,
-  ShoppingBag,
-  Building2,
-} from 'lucide-react-native';
-import * as ScreenOrientation from "expo-screen-orientation";
-import { useFocusEffect } from '@react-navigation/native';
 
 const BusinessTypeSelection = ({ navigation }) => {
   const [selectedType, setSelectedType] = useState('');
 
-  // Use useFocusEffect to handle orientation when screen comes into focus
-  useFocusEffect(
-    useCallback(() => {
-      const setPortraitOrientation = async () => {
-        try {
-          await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
-        } catch (error) {
-          console.error("Failed to set portrait orientation", error);
-        }
-      };
-
-      setPortraitOrientation();
-
-      // Optional cleanup
-      return () => {
-        ScreenOrientation.unlockAsync();
-      };
-    }, [])
-  );
-
   const businessTypes = [
     {
       type: 'Restaurant',
-      icon: UtensilsCrossed,
       description: 'For cafes, restaurants, and food service businesses',
     },
     {
       type: 'Supermarket',
-      icon: ShoppingCart,
       description: 'For large retail stores with multiple departments',
     },
     {
       type: 'Grocery',
-      icon: Store,
       description: 'For local grocery stores and food markets',
     },
     {
       type: 'General Store',
-      icon: Building2,
       description: 'For convenience stores and general merchandise',
     },
     {
       type: 'Retail',
-      icon: ShoppingBag,
       description: 'For specialty retail and boutique shops',
     },
   ];
@@ -86,7 +52,6 @@ const BusinessTypeSelection = ({ navigation }) => {
 
       <View style={styles.grid}>
         {businessTypes.map((business) => {
-          const Icon = business.icon;
           return (
             <TouchableOpacity
               key={business.type}
@@ -104,7 +69,7 @@ const BusinessTypeSelection = ({ navigation }) => {
                     : styles.iconDefault,
                 ]}
               >
-                <Icon color="white" size={32} />
+                <Text style={styles.iconPlaceholder}>{business.type[0]}</Text>
               </View>
               <Text style={styles.cardTitle}>{business.type}</Text>
               <Text style={styles.cardDescription}>
@@ -128,8 +93,6 @@ const BusinessTypeSelection = ({ navigation }) => {
     </ScrollView>
   );
 };
-
-// export default BusinessTypeSelection;
 
 const styles = StyleSheet.create({
   container: {
@@ -182,6 +145,11 @@ const styles = StyleSheet.create({
   },
   iconSelected: {
     backgroundColor: '#065F46',
+  },
+  iconPlaceholder: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
   },
   cardTitle: {
     fontSize: 18,
