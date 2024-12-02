@@ -1,5 +1,10 @@
 {
   "expo": {
+    "jsEngine": "hermes",
+    "updates": {
+      "enabled": true,
+      "checkAutomatically": "ON_ERROR_RECOVERY"
+    },
     "name": "BillingBuddy",
     "slug": "BillingBuddy",
     "version": "1.0.0",

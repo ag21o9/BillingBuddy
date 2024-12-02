@@ -1,15 +1,37 @@
 import { Text, View } from "react-native";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { NavigationIndependentTree } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Login from "../src/screens/login";
+import BusinessTypeSelection from "../src/screens/BusinessTypeSelection";
+import BasicDetails from "../src/screens/BasicDetails";
+// import BillingPage from '../src/screens/BillingPage';
 
-export default function Index() {
+const Stack = createNativeStackNavigator();
+
+export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+    <NavigationIndependentTree>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="BusinessTypeSelection"
+            component={BusinessTypeSelection}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="BasicDetails"
+            component={BasicDetails}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   );
 }
