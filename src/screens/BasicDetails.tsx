@@ -63,7 +63,7 @@ const MENU_ITEMS = {
   "Appetizers": [
     { id: 19, name: "Nachos", price: 120.0, code: "APP001" },
     { id: 20, name: "Spring Rolls", price: 100.0, code: "APP002" },
-    { id: 21, name: "Chicken Wings", price: 180.0, code: "APP003" },
+    { id: 21, name: "Chicken Crispy Wings", price: 180.0, code: "APP003" },
   ],
   "Grilled Items": [
     { id: 22, name: "Grilled Chicken", price: 200.0, code: "GRI001" },
